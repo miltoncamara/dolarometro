@@ -3,11 +3,73 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dolarometro: O Dolar não pode falar</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+        /* Ajusta o container para ocupar 90% da largura da tela */
+        padding: 15px;
+        /* Reduz o padding */
+      }
+
+      h1 {
+        width: 100%;
+        /* Ajusta o título para ocupar toda a largura */
+        font-size: 18px;
+        /* Reduz o tamanho da fonte */
+      }
+
+      input {
+        width: 50px;
+        /* Ajusta a largura do input */
+        font-size: 14px;
+        /* Reduz o tamanho da fonte */
+      }
+
+      .chart {
+        height: 150px;
+        /* Reduz a altura do gráfico */
+      }
+    }
+
+    /* Ajuste para telas menores que 480px (celulares em modo retrato) */
+    @media (max-width: 480px) {
+      .container {
+        width: 100%;
+        /* O container ocupa toda a largura */
+        padding: 10px;
+        /* Padding menor para telas pequenas */
+      }
+
+      h1 {
+        font-size: 16px;
+        /* Fonte menor */
+        padding: 10px;
+        /* Mais espaço interno */
+      }
+
+      input {
+        width: 40px;
+        /* Input mais estreito */
+        font-size: 12px;
+        /* Fonte menor */
+      }
+
+      .rate-output {
+        font-size: 18px;
+        /* Reduz o tamanho do texto */
+      }
+
+      .chart {
+        height: 120px;
+        /* Altura menor para gráficos */
+      }
+    }
+
     html {
       margin: 0;
       padding: 0;
@@ -163,7 +225,7 @@
         const data = await response.json();
         const rate = data.USDBRL.high;
         cotacaoAtual = data.USDBRL.high;
-        
+
         document.getElementById('dollar-quote').innerText = `R$ ${rate}`;
         document.getElementById('actual-quote').innerText = `R$ ${rate}`;
 
