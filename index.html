@@ -4,11 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotação USD/EUR</title>
+  <title>Dolarometro: O Dolar não pode falar</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    html {
+      margin:0;
+      padding:0; 
+    }
     body {
+      margin:0;
+      padding:0;
       font-family: Arial, sans-serif;
       background: linear-gradient(to bottom, #006400, #32CD32, #FFD700);
       color: #fff;
@@ -108,12 +114,20 @@
       color: #000;
       float: right;
     }
+    h1 {
+      background-color: blue;
+      padding: 5px;
+      border-radius: 10px;
+      width: 380px;
+      text-align: center;
+    }
   </style>
 </head>
 
 <body>
+  <h1>DOLAROMETRO</h1>
   <div class="image-wrapper">
-    <img src="Capa.jpeg" alt="Imagem Centralizada" width="340">
+    <img src="Capa.jpeg" alt="Imagem Centralizada" width="380">
   </div>
   <div class="container">
     <div class="header">1 dólar americano igual a <span id="actual-quote">...</span></div>
@@ -155,7 +169,7 @@
     fetchDollarQuote();
 
     function fetchDollarHistory() {
-      const labels = ['2018', '2019', '2020', '2021', '2022', '2023'];
+      const labels = ['2018 - Lula', '2019 - Bolsonaro', '2020 - Bolsonaro', '2021 - Bolsonaro', '2022 - Bolsonaro', '2023 - Bolsonaro'];
       const data = [3.74, 3.87, 4.02, 5.39, 5.16, 5.25]; // Dados estáticos simulados para 6 anos
 
       createChart(labels, data);
@@ -180,7 +194,6 @@
           responsive: true,
           maintainAspectRatio: false,
           scales: {
-            x: { title: { display: true, text: 'Ano' } },
             y: { title: { display: true, text: 'Cotação (BRL)' } }
           }
         }
