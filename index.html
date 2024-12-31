@@ -1,345 +1,331 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dolarometro: O Dolar não pode falar</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dolarometro: O Dolar não pode falar</title>
     <meta property="og:title" content="Dolarometro: O Dolar não pode falar">
-  <meta property="og:description" content="Diga não a censura, cotação do dolar precisa estar pública.">
-  <meta property="og:image" content="https://www.dolarometro.com.br/capa.png">
-  <meta property="og:url" content="https://www.dolarometro.com.br/capa.png">
-  <meta property="og:type" content="website">
+    <meta property="og:description" content="Diga não a censura, cotação do dolar precisa estar pública.">
+    <meta property="og:image" content="https://www.dolarometro.com.br/capa.png">
+    <meta property="og:url" content="https://www.dolarometro.com.br/capa.png">
+    <meta property="og:type" content="website">
+    <!-- Meta tags para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dolarometro: O Dolar não pode falar">
+    <meta name="twitter:description" content="Acompanhe a cotação do dólar com humor e praticidade.">
+    <meta name="twitter:image" content="https://www.dolarometro.com.br/capa.png">
+    <!-- Meta padrão -->
+    <meta name="description" content="Diga não a censura, cotação do dolar precisa estar pública.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @media (max-width: 768px) {
+        .container {
+          width: 90%;
+          /* Ajusta o container para ocupar 90% da largura da tela */
+          padding: 15px;
+          /* Reduz o padding */
+        }
 
-  <!-- Meta tags para Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dolarometro: O Dolar não pode falar">
-  <meta name="twitter:description" content="Acompanhe a cotação do dólar com humor e praticidade.">
-  <meta name="twitter:image" content="https://www.dolarometro.com.br/capa.png">
+        h1 {
+          width: 100%;
+          /* Ajusta o título para ocupar toda a largura */
+          font-size: 18px;
+          /* Reduz o tamanho da fonte */
+        }
 
-  <!-- Meta padrão -->
-  <meta name="description" content="Diga não a censura, cotação do dolar precisa estar pública.">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        input {
+          width: 50px;
+          /* Ajusta a largura do input */
+          font-size: 14px;
+          /* Reduz o tamanho da fonte */
+        }
 
-  <style>
-    @media (max-width: 768px) {
-      .container {
-        width: 90%;
-        /* Ajusta o container para ocupar 90% da largura da tela */
-        padding: 15px;
-        /* Reduz o padding */
+        .chart {
+          height: 150px;
+          /* Reduz a altura do gráfico */
+        }
       }
 
-      h1 {
-        width: 100%;
-        /* Ajusta o título para ocupar toda a largura */
+      /* Ajuste para telas menores que 480px (celulares em modo retrato) */
+      @media (max-width: 480px) {
+        .container {
+          width: 100%;
+          /* O container ocupa toda a largura */
+          padding: 10px;
+          /* Padding menor para telas pequenas */
+        }
+
+        h1 {
+          font-size: 16px;
+          /* Fonte menor */
+          padding: 10px;
+          /* Mais espaço interno */
+        }
+
+        input {
+          width: 40px;
+          /* Input mais estreito */
+          font-size: 12px;
+          /* Fonte menor */
+        }
+
+        .rate-output {
+          font-size: 18px;
+          /* Reduz o tamanho do texto */
+        }
+
+        .chart {
+          height: 120px;
+          /* Altura menor para gráficos */
+        }
+      }
+
+      html {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #006400, #32CD32, #FFD700);
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        width: 350px;
+        background-color: #1f1f1f;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .header {
+        vertical-align: middle;
         font-size: 18px;
-        /* Reduz o tamanho da fonte */
+        margin-bottom: 20px;
+      }
+
+      .rate-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .rate-input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
       input {
-        width: 50px;
-        /* Ajusta a largura do input */
-        font-size: 14px;
-        /* Reduz o tamanho da fonte */
+        width: 60px;
+        padding: 5px;
+        background-color: #303030;
+        border: 1px solid #444;
+        border-radius: 5px;
+        color: #fff;
+        text-align: center;
       }
 
-      .chart {
-        height: 150px;
-        /* Reduz a altura do gráfico */
-      }
-    }
-
-    /* Ajuste para telas menores que 480px (celulares em modo retrato) */
-    @media (max-width: 480px) {
-      .container {
-        width: 100%;
-        /* O container ocupa toda a largura */
-        padding: 10px;
-        /* Padding menor para telas pequenas */
-      }
-
-      h1 {
-        font-size: 16px;
-        /* Fonte menor */
-        padding: 10px;
-        /* Mais espaço interno */
-      }
-
-      input {
-        width: 40px;
-        /* Input mais estreito */
-        font-size: 12px;
-        /* Fonte menor */
+      select {
+        background-color: #303030;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 5px;
+        padding: 5px;
       }
 
       .rate-output {
-        font-size: 18px;
-        /* Reduz o tamanho do texto */
+        font-size: 24px;
       }
 
       .chart {
-        height: 120px;
-        /* Altura menor para gráficos */
+        height: 200px;
+        background-color: #292929;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #aaa;
       }
-    }
 
-    html {
-      margin: 0;
-      padding: 0;
-    }
+      .footer {
+        text-align: center;
+      }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #006400, #32CD32, #FFD700);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+      .footer a {
+        color: #4e91ff;
+        text-decoration: none;
+      }
 
-    .container {
-      width: 350px;
-      background-color: #1f1f1f;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+      .footer a:hover {
+        text-decoration: underline;
+      }
 
-    .header {
-      vertical-align: middle;
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
-    .rate-display {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .rate-input {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    input {
-      width: 60px;
-      padding: 5px;
-      background-color: #303030;
-      border: 1px solid #444;
-      border-radius: 5px;
-      color: #fff;
-      text-align: center;
-    }
-
-    select {
-      background-color: #303030;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 5px;
-      padding: 5px;
-    }
-
-    .rate-output {
-      font-size: 24px;
-    }
-
-    .chart {
-      height: 200px;
-      background-color: #292929;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #aaa;
-    }
-
-    .footer {
-      text-align: center;
-    }
-
-    .footer a {
-      color: #4e91ff;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* .image-wrapper img {
+      /* .image-wrapper img {
       display: block;
       margin: 0 auto 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     } */
+      #actual-quote {
+        background-color: yellow;
+        padding: 5px;
+        border-radius: 5px;
+        color: #000;
+        float: right;
+      }
 
-    #actual-quote {
-      background-color: yellow;
-      padding: 5px;
-      border-radius: 5px;
-      color: #000;
-      float: right;
-    }
-
-    h1 {
-      background-color: blue;
-      padding: 5px;
-      border-radius: 10px;
-      width: 380px;
-      text-align: center;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="image-wrapper">
-    <img src="capa.png" alt="Imagem Centralizada" width="380">
-  </div>
-  <div class="container">
-    <div class="header">1 dólar americano igual a <span id="actual-quote">...</span></div>
-    <div class="rate-display">
-      <div class="rate-input">
-        <input type="number" value="1" id="quote-numbers" />
-        <select id="drp-quote">
-          <option value="usd">Dólar Americano (USD)</option>
-          <option value="brl">Real Brasileiro (BRL)</option>
-        </select>
+      h1 {
+        background-color: blue;
+        padding: 5px;
+        border-radius: 10px;
+        width: 380px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image-wrapper">
+      <img src="capa.png" alt="Imagem Centralizada" width="380">
+    </div>
+    <div class="container">
+      <div class="header">1 dólar americano igual a <span id="actual-quote">...</span>
       </div>
-      <div id="dollar-quote">...</div>
+      <div class="rate-display">
+        <div class="rate-input">
+          <input type="number" value="1" id="quote-numbers" />
+          <select id="drp-quote">
+            <option value="usd">Dólar Americano (USD)</option>
+            <option value="brl">Real Brasileiro (BRL)</option>
+          </select>
+        </div>
+        <div id="dollar-quote">...</div>
+      </div>
+      <div class="chart-container">
+        <canvas id="dollarChart"></canvas>
+      </div>
+      <div class="footer">
+        <!-- <a href="#">Mais sobre USD/EUR</a> -->
+      </div>
     </div>
-    <div class="chart-container">
-      <canvas id="dollarChart"></canvas>
-    </div>
-    <div class="footer">
-      <!-- <a href="#">Mais sobre USD/EUR</a> -->
-    </div>
-  </div>
-
-
-  <script>
-    let cotacaoAtual = 0;
-
-    fetchDollarQuote();
-
-    async function fetchDollarQuote() {
-      try {
-        const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
-        const data = await response.json();
-        const rate = data.USDBRL.high;
-        cotacaoAtual = data.USDBRL.high;
-
-        document.getElementById('dollar-quote').innerText = `R$ ${rate}`;
-        document.getElementById('actual-quote').innerText = `R$ ${rate}`;
-
-        fetchDollarHistory();
-
-      } catch (error) {
-        document.getElementById('dollar-quote').innerText = 'Erro ao carregar';
-        console.error('Erro ao buscar cotação:', error);
-      }
-    }
-
-    function fetchDollarHistory() {
-      const labels = [
-        '2010 - Lula',
-        '2016 - Dilma',
-        '2018 - Temer',
-        '2022 - Bolsonaro',
-        '2024 - Lula'
-      ];
-
-      const data = [1.67, 3.25, 3.87, 5.28, cotacaoAtual]; // Dados estáticos simulados para 6 anos
-
-      createChart(labels, data);
-    }
-
-    function createChart(labels, data) {
-      const ctx = document.getElementById('dollarChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Cotação do Dólar (BRL)',
-            data,
-            borderColor: 'rgba(0, 123, 255, 1)',
-            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-            borderWidth: 2,
-            fill: true,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: { title: { display: true, text: 'Cotação (BRL)' } }
-          }
+    <script>
+      let cotacaoAtual = 0;
+      fetchDollarQuote();
+	  
+      async function fetchDollarQuote() {
+        try {
+          const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+          const data = await response.json();
+          const rate = data.USDBRL.high;
+          cotacaoAtual = data.USDBRL.high;
+          document.getElementById('actual-quote').innerText = `R$ ${rate}`;
+          fetchDollarHistory();
+          calcular();
+        } catch (error) {
+          document.getElementById('dollar-quote').innerText = 'Erro ao carregar';
+          console.error('Erro ao buscar cotação:', error);
         }
-      });
-    }
+      }
 
-    async function submitContactForm() {
-      const form = document.getElementById('registrationForm'); // Referência ao formulário
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const telefone = document.getElementById('phone').value;
+      function fetchDollarHistory() {
+        const labels = ['2010 - Lula', '2016 - Dilma', '2018 - Temer', '2022 - Bolsonaro', '2024 - Lula'];
+        const data = [1.67, 3.25, 3.87, 5.28, cotacaoAtual]; // Dados estáticos simulados para 6 anos
+        createChart(labels, data);
+      }
 
-      const requestData = {
-        name: name,
-        email: email,
-        telefone: telefone,
-      };
-
-      try {
-        const response = await fetch('https://640bb93794ce1239b09eaa6a.mockapi.io/v1/contato', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+      function createChart(labels, data) {
+        const ctx = document.getElementById('dollarChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Cotação do Dólar (BRL)',
+              data,
+              borderColor: 'rgba(0, 123, 255, 1)',
+              backgroundColor: 'rgba(0, 123, 255, 0.1)',
+              borderWidth: 2,
+              fill: true,
+            }]
           },
-          body: JSON.stringify(requestData),
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: 'Cotação (BRL)'
+                }
+              }
+            }
+          }
         });
-
-        if (response.ok) {
-          const responseData = await response.json();
-          alert(`Contato enviado com sucesso! ID do contato: ${responseData.id}`);
-          form.reset();
-        } else {
-          alert(`Erro ao enviar o contato: ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error('Erro na solicitação:', error);
-        alert('Ocorreu um erro ao enviar o contato. Tente novamente.');
       }
-    }
+	  
+      async function submitContactForm() {
+        const form = document.getElementById('registrationForm'); // Referência ao formulário
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const telefone = document.getElementById('phone').value;
+        const requestData = {
+          name: name,
+          email: email,
+          telefone: telefone,
+        };
+        try {
+          const response = await fetch('https://640bb93794ce1239b09eaa6a.mockapi.io/v1/contato', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+          });
+          if (response.ok) {
+            const responseData = await response.json();
+            alert(`Contato enviado com sucesso! ID do contato: ${responseData.id}`);
+            form.reset();
+          } else {
+            alert(`Erro ao enviar o contato: ${response.statusText}`);
+          }
+        } catch (error) {
+          console.error('Erro na solicitação:', error);
+          alert('Ocorreu um erro ao enviar o contato. Tente novamente.');
+        }
+      }
 
-    // document.getElementById('registrationForm').addEventListener('submit', function (event) {
-    //   event.preventDefault();
-    //   submitContactForm();
-    // });
+      function calcular() {
+        const valor = parseFloat(document.getElementById('quote-numbers').value) || 0;
+        const moeda = document.getElementById('drp-quote').value;
+        const resultado = moeda === 'brl'
+			? (valor / cotacaoAtual).toFixed(3)
+			: (valor * cotacaoAtual).toFixed(3);
 
-    document.getElementById('drp-quote').addEventListener('change', function (event) {
-      event.preventDefault();
-      alert('teste');
-    });
-
-    document.getElementById('quote-numbers').addEventListener('change', function (event) {
-      event.preventDefault();
-      let calculoCotacao = (event.target.value * cotacaoAtual).toFixed(3);
-      document.getElementById('dollar-quote').innerText = `R$ ${calculoCotacao}`;
-    });
-
-  </script>
-</body>
-
+        const simbolo = moeda === 'brl' ? '$' : 'R$';
+        document.getElementById('dollar-quote').innerText = `${simbolo} ${resultado}`;
+      }
+	  
+      document.getElementById('drp-quote').addEventListener('change', function(event) {
+        event.preventDefault();
+        calcular();
+      });
+	  
+      document.getElementById('quote-numbers').addEventListener('change', function(event) {
+        event.preventDefault();
+        calcular();
+      });
+    </script>
+  </body>
 </html>
