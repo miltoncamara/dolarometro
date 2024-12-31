@@ -9,12 +9,13 @@
 
   <style>
     html {
-      margin:0;
-      padding:0; 
+      margin: 0;
+      padding: 0;
     }
+
     body {
-      margin:0;
-      padding:0;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
       background: linear-gradient(to bottom, #006400, #32CD32, #FFD700);
       color: #fff;
@@ -114,6 +115,7 @@
       color: #000;
       float: right;
     }
+
     h1 {
       background-color: blue;
       padding: 5px;
@@ -133,7 +135,7 @@
     <div class="header">1 dólar americano igual a <span id="actual-quote">...</span></div>
     <div class="rate-display">
       <div class="rate-input">
-        <input type="number" value="1" id="quote-numbers"/>
+        <input type="number" value="1" id="quote-numbers" />
         <select id="drp-quote">
           <option value="usd">Dólar Americano (USD)</option>
           <option value="brl">Real Brasileiro (BRL)</option>
@@ -152,25 +154,37 @@
 
   <script>
     let cotacaoAtual = 0;
+
+    fetchDollarQuote();
+
     async function fetchDollarQuote() {
       try {
         const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
         const data = await response.json();
         const rate = data.USDBRL.high;
         cotacaoAtual = data.USDBRL.high;
+        
         document.getElementById('dollar-quote').innerText = `R$ ${rate}`;
         document.getElementById('actual-quote').innerText = `R$ ${rate}`;
+
+        fetchDollarHistory();
+
       } catch (error) {
         document.getElementById('dollar-quote').innerText = 'Erro ao carregar';
         console.error('Erro ao buscar cotação:', error);
       }
     }
 
-    fetchDollarQuote();
-
     function fetchDollarHistory() {
-      const labels = ['2018 - Lula', '2019 - Bolsonaro', '2020 - Bolsonaro', '2021 - Bolsonaro', '2022 - Bolsonaro', '2023 - Bolsonaro'];
-      const data = [3.74, 3.87, 4.02, 5.39, 5.16, 5.25]; // Dados estáticos simulados para 6 anos
+      const labels = [
+        '2010 - Lula',
+        '2016 - Dilma',
+        '2018 - Temer',
+        '2022 - Bolsonaro',
+        '2024 - Lula'
+      ];
+
+      const data = [1.67, 3.25, 3.87, 5.28, cotacaoAtual]; // Dados estáticos simulados para 6 anos
 
       createChart(labels, data);
     }
@@ -199,9 +213,6 @@
         }
       });
     }
-
-
-    fetchDollarHistory();
 
     async function submitContactForm() {
       const form = document.getElementById('registrationForm'); // Referência ao formulário
@@ -251,7 +262,7 @@
       event.preventDefault();
       let calculoCotacao = (event.target.value * cotacaoAtual).toFixed(3);
       document.getElementById('dollar-quote').innerText = `R$ ${calculoCotacao}`;
-    });    
+    });
 
   </script>
 </body>
