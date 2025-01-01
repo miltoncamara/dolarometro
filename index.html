@@ -279,7 +279,7 @@
 
         fetchDollarHistory();
         fetchPicanhaHistory();
-		calcularDolar();
+        calcularDolar();
       } catch (error) {
         document.getElementById('dollar-quote').innerText = 'Erro ao carregar';
         console.error('Erro ao buscar cotação:', error);
@@ -398,16 +398,16 @@
       }
     }
 
-	function calcularDolar() {
+    function calcularDolar() {
       const valor = parseFloat(document.getElementById('quote-numbers').value) || 0;
       const moeda = document.getElementById('drp-quote').value;
       const resultado = moeda === 'brl'
-            ? (valor / cotacaoAtual).toFixed(3)
-			: (valor * cotacaoAtual).toFixed(3);
+        ? (valor / cotacaoAtual).toFixed(3)
+        : (valor * cotacaoAtual).toFixed(3);
 
       const simbolo = moeda === 'brl' ? '$' : 'R$';
       document.getElementById('dollar-quote').innerText = `${simbolo} ${resultado}`;
-	}
+    }
 
     document.getElementById('drp-quote').addEventListener('change', function (event) {
       event.preventDefault();
