@@ -24,6 +24,66 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    @media only screen and (min-width: 360px) {
+      html {
+      margin: 0;
+      padding: 0;
+    }
+      
+    .image-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 20px;
+      border-radius: 10px;
+    }
+    
+    body {
+      margin-top:40px !important;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #006400, #32CD32, #FFD700);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+      .parent-container {
+        flex-direction: column;
+        /* Alinha os containers em coluna em telas menores */
+      }
+
+      .container {
+        width: 90%;
+        /* Ajusta o container para ocupar 90% da largura da tela */
+        padding: 15px;
+        /* Reduz o padding */
+      }
+
+      h1 {
+        width: 100%;
+        /* Ajusta o título para ocupar toda a largura */
+        font-size: 18px;
+        /* Reduz o tamanho da fonte */
+      }
+
+      input {
+        width: 50px;
+        /* Ajusta a largura do input */
+        font-size: 14px;
+        /* Reduz o tamanho da fonte */
+      }
+
+      .chart {
+        height: 150px;
+        /* Reduz a altura do gráfico */
+      }
+    }
+
     @media (max-width: 768px) {
 
       
