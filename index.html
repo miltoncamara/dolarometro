@@ -265,6 +265,7 @@
 
   <script>
     let cotacaoAtual = 0;
+    let cotacaoMaxima = 0;
 
     fetchDollarQuote();
 
@@ -272,10 +273,10 @@
       try {
         const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
         const data = await response.json();
-        const rate = data.USDBRL.ask;
         cotacaoAtual = data.USDBRL.ask;
+        cotacaoMaxima = data.USDBRL.high;
 
-        document.getElementById('actual-quote').innerText = `R$ ${rate}`;
+        document.getElementById('actual-quote').innerText = `R$ ${cotacaoAtual}`;
 
         fetchDollarHistory();
         fetchPicanhaHistory();
@@ -309,7 +310,7 @@
         '2024 - Lula'
       ];
 
-      const data = [1.67, 3.25, 3.87, 5.28, cotacaoAtual]; // Dados estáticos simulados para 6 anos
+      const data = [1.67, 3.25, 3.87, 5.28, cotacaoMaxima]; // Dados estáticos simulados para 6 anos
 
       createChart(labels, data);
     }
