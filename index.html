@@ -7,10 +7,6 @@
   <title>Dolarometro: O Dólar não pode falar</title>
   <link rel="icon" type="image/png" href="https://www.dolarometro.com.br/capa1.png" />
   <style>
-    * {
-      /* box-sizing: border-box; */
-    }
-
     body {
       margin: 0;
       padding: 0;
@@ -26,7 +22,8 @@
 
     .image-wrapper {
       width: 100%;
-      max-width: 350px; /* Largura máxima no computador */
+      max-width: 350px;
+      /* Largura máxima no computador */
       margin-bottom: 20px;
     }
 
@@ -148,119 +145,130 @@
 </head>
 
 <body>
-<div class="image-wrapper">
-  <img src="https://www.dolarometro.com.br/capa1.png" alt="Imagem do Dólar">
-</div>
-<div class="container">
-  <div class="header" id="conversion-title">Converter</div>
-  <div class="rate-display">
-    <div class="rate-input">
-      <input type="number" value="1" id="quote-numbers" style="width: 50%;"/>
-      <select id="drp-quote">
-        <option value="usd">Dólar Americano (USD)</option>
-        <option value="brl">Real Brasileiro (BRL)</option>
-        <option value="picanha">KG de Picanha</option>
-      </select>
+  <div class="image-wrapper">
+    <img src="https://www.dolarometro.com.br/capa1.png" alt="Imagem do Dólar">
+  </div>
+  <div class="container">
+    <div class="header" id="conversion-title">Converter</div>
+    <div class="rate-display">
+      <div class="rate-input">
+        <input type="number" value="1" id="quote-numbers" style="width: 50%;" />
+        <select id="drp-quote">
+          <option value="usd">Dólar Americano (USD)</option>
+          <option value="brl">Real Brasileiro (BRL)</option>
+          <option value="picanha">KG de Picanha</option>
+        </select>
+      </div>
+      <div id="quote-output">Aguardando conversão...</div>
     </div>
-    <div id="quote-output">Aguardando conversão...</div>
+    <div class="chart-container">
+      <canvas id="unified-chart"></canvas>
+    </div>
   </div>
-  <div class="chart-container">
-    <canvas id="unified-chart"></canvas>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  let cotacaoAtual = 0;
-  let cotacaoMaxima = 0;
-  const picanhaPreco = 70.19;
-  let currentChart = null;
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let cotacaoAtual = 0;
+    let cotacaoMaxima = 0;
+    let currentChart = null;
 
-  async function fetchDollarQuote() {
-    try {
-      const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
-      if (!response.ok) throw new Error('Falha ao buscar cotação.');
-      const data = await response.json();
+    const picanhaPreco = 70.19;
 
-      cotacaoAtual = parseFloat(data.USDBRL.ask);
-      cotacaoMaxima = parseFloat(data.USDBRL.high);
+    async function fetchDollarQuote() {
+      try {
+        const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+        if (!response.ok) throw new Error('Falha ao buscar cotação.');
+        const data = await response.json();
 
-      calcularConversao();
-      atualizarGrafico('usd');
-    } catch (error) {
-      document.getElementById('quote-output').innerText = 'Erro ao carregar dados.';
-      console.error(error);
-    }
-  }
+        cotacaoAtual = parseFloat(data.USDBRL.ask);
+        cotacaoMaxima = parseFloat(data.USDBRL.high);
 
-  function atualizarTitulo(moeda) {
-    const titleMap = {
-      usd: 'Converter Dólar para Real',
-      brl: 'Converter Real para Dólar',
-      picanha: 'Converter para KG de Picanha',
-    };
-    document.getElementById('conversion-title').innerText = titleMap[moeda] || 'Converter';
-  }
-
-  function atualizarGrafico(moeda) {
-    const labels = ['2010', '2016', '2018', '2022', '2024'];
-    const dollarData = [1.67, 3.25, 3.87, 5.28, cotacaoMaxima];
-    const picanhaData = [50, 43.03, 43.03, 73.80, picanhaPreco];
-    const data = moeda === 'picanha' ? picanhaData : dollarData;
-    const label = moeda === 'picanha' ? 'Preço da Picanha (BRL/KG)' : 'Cotação do Dólar (BRL)';
-    const color = moeda === 'picanha' ? 'rgba(255, 99, 132, 1)' : 'rgba(0, 123, 255, 1)';
-    const bgColor = moeda === 'picanha' ? 'rgba(255, 99, 132, 0.1)' : 'rgba(0, 123, 255, 0.1)';
-
-    if (currentChart) currentChart.destroy();
-
-    const ctx = document.getElementById('unified-chart').getContext('2d');
-    currentChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label,
-          data,
-          borderColor: color,
-          backgroundColor: bgColor,
-          borderWidth: 2,
-          fill: true,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        calcularConversao();
+        atualizarGrafico('usd');
+      } catch (error) {
+        document.getElementById('quote-output').innerText = 'Erro ao carregar dados.';
+        console.error(error);
       }
-    });
-  }
-
-  function calcularConversao() {
-    const valor = parseFloat(document.getElementById('quote-numbers').value) || 0;
-    const moeda = document.getElementById('drp-quote').value;
-    let resultado;
-
-    switch (moeda) {
-      case 'brl':
-        resultado = (valor / cotacaoAtual).toFixed(3);
-        break;
-      case 'usd':
-        resultado = (valor * cotacaoAtual).toFixed(3);
-        break;
-      case 'picanha':
-        resultado = (valor * picanhaPreco).toFixed(2);
-        break;
     }
 
-    document.getElementById('quote-output').innerText = `R$ ${resultado}`;
-    atualizarTitulo(moeda);
-    atualizarGrafico(moeda);
-  }
+    function atualizarTitulo(moeda) {
+      const titleMap = {
+        usd: 'Converter Dólar para Real',
+        brl: 'Converter Real para Dólar',
+        picanha: 'Converter para KG de Picanha',
+      };
+      document.getElementById('conversion-title').innerText = titleMap[moeda] || 'Converter';
+    }
 
-  document.getElementById('drp-quote').addEventListener('change', calcularConversao);
-  document.getElementById('quote-numbers').addEventListener('input', calcularConversao);
+    function atualizarGrafico(moeda) {
+      const labels = ['2010', '2016', '2018', '2022', '2024'];
+      const dollarData = [1.67, 3.25, 3.87, 5.28, cotacaoMaxima];
+      const picanhaData = [50, 43.03, 43.03, 73.80, picanhaPreco];
+      const data = moeda === 'picanha' ? picanhaData : dollarData;
+      const label = moeda === 'picanha' ? 'Preço da Picanha (BRL/KG)' : 'Cotação do Dólar (BRL)';
+      const color = moeda === 'picanha' ? 'rgba(255, 99, 132, 1)' : 'rgba(0, 123, 255, 1)';
+      const bgColor = moeda === 'picanha' ? 'rgba(255, 99, 132, 0.1)' : 'rgba(0, 123, 255, 0.1)';
 
-  fetchDollarQuote();
-</script>
+      if (currentChart) currentChart.destroy();
+
+      const ctx = document.getElementById('unified-chart').getContext('2d');
+      currentChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label,
+            data,
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: 2,
+            fill: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    }
+
+    function calcularConversao() {
+      const valor = parseFloat(document.getElementById('quote-numbers').value) || 0;
+      const moeda = document.getElementById('drp-quote').value;
+      let resultado;
+      let moedaAtual;
+
+      switch (moeda) {
+        case 'brl': {
+          resultado = valor / cotacaoAtual;
+          resultado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(resultado);
+          moedaAtual = 'US$';
+          break;
+        }
+        case 'usd': {
+          resultado = valor * cotacaoAtual;
+          resultado = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(resultado);
+          moedaAtual = 'R$';
+          break;
+        }
+        case 'picanha': {
+          resultado = valor * picanhaPreco;
+          resultado = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(resultado);
+          moedaAtual = 'R$';
+          break;
+        }
+      }
+
+      document.getElementById('quote-output').innerText = `${moedaAtual} ${resultado}`;
+      atualizarTitulo(moeda);
+      atualizarGrafico(moeda);
+    }
+
+    document.getElementById('drp-quote').addEventListener('change', calcularConversao);
+    document.getElementById('quote-numbers').addEventListener('input', calcularConversao);
+
+    fetchDollarQuote();
+  </script>
 </body>
 
 </html>
