@@ -241,23 +241,36 @@
       switch (moeda) {
         case 'brl': {
           resultado = valor / cotacaoAtual;
-          resultado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(resultado);
+          resultado = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'narrowSymbol'
+          }).format(resultado).replace('$', 'US$ ');
           moedaAtual = 'US$';
           break;
         }
         case 'usd': {
           resultado = valor * cotacaoAtual;
-          resultado = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(resultado);
+          resultado = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            currencyDisplay: 'narrowSymbol'
+          }).format(resultado).replace('R$', 'R$ ');
           moedaAtual = 'R$';
           break;
         }
         case 'picanha': {
           resultado = valor * picanhaPreco;
-          resultado = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(resultado);
+          resultado = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            currencyDisplay: 'narrowSymbol'
+          }).format(resultado).replace('R$', 'R$ ');
           moedaAtual = 'R$';
           break;
         }
       }
+
 
       document.getElementById('quote-output').innerText = `${resultado}`;
       atualizarTitulo(moeda);
