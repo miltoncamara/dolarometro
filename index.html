@@ -520,7 +520,7 @@
       const unidade = document.getElementById('drp-unit').value;
       const resultado = unidade === 'kg'
         ? (valorPicanha * peso).toFixed(2)
-        : ((valorPicanha / 1000) * peso).toFixed(2);
+        : (valorPicanha / 1000 * peso).toFixed(2);
 
       document.getElementById('picanha-quote').innerText = `R$ ${resultado}`;
     }
