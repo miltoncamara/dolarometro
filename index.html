@@ -243,6 +243,7 @@
       border: 1px solid #444;
       border-radius: 5px;
       padding: 5px;
+      width: 135px;
     }
 
     .rate-output {
@@ -281,7 +282,7 @@
       border-radius: 10px;
     }
 
-    #actual-quote {
+    .actual-quote {
       background-color: yellow;
       padding: 5px;
       border-radius: 5px;
@@ -314,7 +315,7 @@
   </div>
   <div class="parent-container">
     <div class="container">
-      <div class="header">1 dólar americano igual a <span id="actual-quote">...</span></div>
+      <div class="header">1 dólar americano igual a <span class="actual-quote" id="actual-quote">...</span></div>
       <div class="rate-display">
         <div class="rate-input">
           <input type="number" value="1" id="quote-numbers" />
@@ -334,16 +335,16 @@
     </div>
 
     <div class="container">
-      <div class="header">1 kg de picanha é igual a <span id="actual-quote">R$ 70,19</span></div>
+      <div class="header">1 kg de picanha é igual a <span class="actual-quote" id="actual-picanha-quote">...</span></div>
       <div class="rate-display">
         <div class="rate-input">
-          <input type="number" value="1" id="quote-numbers" />
-          <select id="drp-quote">
-            <option value="usd">KG de Picanha</option>
-            <option value="brl">G de Picanha</option>
+          <input type="number" value="1" id="weight-numbers" />
+          <select id="drp-unit">
+            <option value="kg">KG de Picanha</option>
+            <option value="g">G de Picanha</option>
           </select>
         </div>
-        <div id="dollar-quote">R$ 70,19</div>
+        <div id="picanha-quote"></div>
       </div>
       <div class="chart-container">
         <canvas id="picanha-chart"></canvas>
@@ -357,6 +358,7 @@
   <script>
     let cotacaoAtual = 0;
     let cotacaoMaxima = 0;
+    const valorPicanha = 70.19;
 
     fetchDollarQuote();
 
@@ -387,9 +389,11 @@
         '2024 - Lula'
       ];
 
-      const data = [50, 43.03, 43.03, 73.80, 70.19]; // Dados estáticos simulados para 6 anos
+      const data = [50, 43.03, 43.03, 73.80, valorPicanha]; // Dados estáticos simulados para 6 anos
 
       createChartPicanha(labels, data);
+      document.getElementById('actual-picanha-quote').innerText = `R$ ${valorPicanha}`;
+      document.getElementById('picanha-quote').innerText = `R$ ${valorPicanha}`;
     }
 
     function fetchDollarHistory() {
@@ -509,6 +513,26 @@
     document.getElementById('quote-numbers').addEventListener('change', function (event) {
       event.preventDefault();
       calcularDolar();
+    });
+
+    function calcularPicanha() {
+      const peso = parseFloat(document.getElementById('weight-numbers').value) || 0;
+      const unidade = document.getElementById('drp-unit').value;
+      const resultado = unidade === 'kg'
+        ? (valorPicanha * peso).toFixed(2)
+        : ((valorPicanha / 1000) * peso).toFixed(2);
+
+      document.getElementById('picanha-quote').innerText = `R$ ${resultado}`;
+    }
+
+    document.getElementById('drp-unit').addEventListener('change', function (event) {
+      event.preventDefault();
+      calcularPicanha();
+    });
+
+    document.getElementById('weight-numbers').addEventListener('change', function (event) {
+      event.preventDefault();
+      calcularPicanha();
     });
   </script>
 </body>
